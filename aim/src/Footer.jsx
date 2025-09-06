@@ -77,7 +77,7 @@ const Footer = () => {
               <span>contact@techstaff.com</span>
             </div>
           </div>
-        </div>  
+        </div>
       </div>
 
       {/* Bottom Bar */}
