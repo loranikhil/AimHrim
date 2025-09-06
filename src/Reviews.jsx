@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Star, ChevronLeft, ChevronRight, Quote, Building2 } from 'lucide-react';
-import './reviews.css';
+import './Reviews.css';
 
 const Reviews = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
