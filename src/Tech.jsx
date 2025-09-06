@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Code, Smartphone, Server, Globe, ChevronRight, Zap, Shield, Layers } from 'lucide-react';
-import './tech.css';
+import './Tech.css';
 
 const TechStack = () => {
   const [activeCategory, setActiveCategory] = useState('frontend');

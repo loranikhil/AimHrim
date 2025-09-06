@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRight, Shield, Users, Zap, CheckCircle } from 'lucide-react';
-import './hero.css';
+import './Hero.css';
 
 const Hero = () => {
   return (
