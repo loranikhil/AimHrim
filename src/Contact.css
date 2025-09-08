@@ -390,32 +390,7 @@
   }
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .contact-section {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  }
-  
-  .contact-title {
-    color: #f1f5f9;
-  }
-  
-  .contact-card {
-    background: #1e293b;
-    border-color: #334155;
-  }
-  
-  .contact-info h3 {
-    color: #f1f5f9;
-  }
-  
-  .trust-indicators {
-    background: #1e293b;
-    border-color: #334155;
-  }
-}
-
-@media (prefers-color-scheme: dark) and (max-width: 600px) {
+@media (max-width: 600px) {
   .contact-section {
     background: #f8f9fa;
   }
@@ -447,5 +422,216 @@
   .trust-item,
   .trust-icon {
     color: #1e1d1f;
+  }
+}
+/* Additional Mobile Responsive Styles - Add these to your existing CSS */
+
+/* Small mobile devices (320px - 480px) */
+@media (max-width: 480px) {
+  .contact-section {
+    padding: 40px 10px;
+    margin-top: -80px;
+  }
+  
+  .contact-container {
+    padding: 0 5px;
+  }
+  
+  .contact-header {
+    margin-bottom: 40px;
+  }
+  
+  .contact-title {
+    font-size: 1.75rem;
+    margin-bottom: 15px;
+  }
+  
+  .contact-subtitle {
+    font-size: 1rem;
+    padding: 0 10px;
+  }
+  
+  .consultation-cta {
+    margin-bottom: 40px;
+  }
+  
+  .consultation-btn {
+    width: 100%;
+    max-width: 280px;
+    padding: 12px 24px;
+    font-size: 0.875rem;
+    gap: 8px;
+  }
+  
+  .contact-methods {
+    gap: 12px;
+    grid-template-columns: 1fr;
+  }
+  
+  .contact-card {
+    padding: 16px 12px;
+    gap: 12px;
+    border-radius: 12px;
+  }
+  
+  .contact-icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: 10px;
+  }
+  
+  .contact-icon svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+  
+  .contact-info h3 {
+    font-size: 1.125rem;
+    margin-bottom: -12px;
+  }
+  
+  .contact-info p {
+    font-size: 0.8125rem;
+    margin-bottom: -8px;
+  }
+  
+  .contact-detail {
+    font-size: 0.9375rem;
+    margin-bottom: -8px;
+  }
+  
+  .availability {
+    font-size: 0.6875rem;
+  }
+  
+  .trust-indicators {
+    padding: 20px 15px;
+    border-radius: 12px;
+    gap: 15px;
+  }
+  
+  .trust-item {
+    font-size: 0.8125rem;
+    gap: 8px;
+  }
+  
+  .trust-icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Extra small mobile devices (320px and below) */
+@media (max-width: 320px) {
+  .contact-section {
+    padding: 30px 8px;
+  }
+  
+  .contact-title {
+    font-size: 1.5rem;
+  }
+  
+  .contact-subtitle {
+    font-size: 0.9375rem;
+  }
+  
+  .consultation-btn {
+    padding: 10px 20px;
+    font-size: 0.8125rem;
+    max-width: 260px;
+  }
+  
+  .contact-card {
+    padding: 14px 10px;
+    gap: 10px;
+  }
+  
+  .contact-icon {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+  }
+  
+  .contact-icon svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  
+  .contact-info h3 {
+    font-size: 1rem;
+  }
+  
+  .contact-info p {
+    font-size: 0.75rem;
+  }
+  
+  .contact-detail {
+    font-size: 0.875rem;
+  }
+  
+  .trust-indicators {
+    padding: 15px 10px;
+  }
+}
+
+/* Medium mobile devices (481px - 600px) */
+@media (min-width: 481px) and (max-width: 600px) {
+  .contact-section {
+    padding: 50px 15px;
+  }
+  
+  .contact-title {
+    font-size: 2.25rem;
+  }
+  
+  .consultation-btn {
+    padding: 15px 30px;
+    font-size: 1rem;
+    max-width: 320px;
+  }
+  
+  .contact-card {
+    padding: 18px 15px;
+    gap: 15px;
+  }
+  
+  .contact-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+  }
+  
+  .contact-icon svg {
+    width: 22px !important;
+    height: 22px !important;
+  }
+  
+  .trust-indicators {
+    padding: 25px 20px;
+    gap: 18px;
+  }
+}
+
+/* Landscape orientation for mobile devices */
+@media (max-height: 500px) and (orientation: landscape) {
+  .contact-section {
+    padding: 30px 20px;
+    min-height: auto;
+  }
+  
+  .contact-header {
+    margin-bottom: 30px;
+  }
+  
+  .consultation-cta {
+    margin-bottom: 30px;
+  }
+  
+  .contact-methods {
+    margin-bottom: 30px;
   }
 }
