@@ -30,7 +30,7 @@ const Service = () => {
       subtitle: "Full-Stack Excellence",
       description: "Elite developers specializing in modern frameworks and cutting-edge technologies.",
       features: ["React/Vue/Angular Experts", "Node.js/Python/Java Masters", "Mobile App Specialists", "DevOps Champions"],
-      demand: "Very High",
+      demand: "Extreme",
       avgSalary: "$85-150k",
       positions: 450,
       color: "#3b82f6",

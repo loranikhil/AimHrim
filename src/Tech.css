@@ -242,7 +242,7 @@
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .tech-stack-logo {
@@ -267,11 +267,36 @@
   flex: 1;
 }
 
+/* New optimized title row with percentage */
+.tech-stack-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  gap: 12px;
+}
+
 .tech-stack-card-title {
   font-size: 18px;
   font-weight: 600;
   color: #2d3748;
-  margin: 0 0 6px 0;
+  margin: 0;
+  flex: 1;
+}
+
+.tech-stack-popularity-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  height: 24px;
+  padding: 0 8px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 12px;
+  flex-shrink: 0;
 }
 
 .tech-stack-card-desc {
@@ -281,44 +306,20 @@
   line-height: 1.5;
 }
 
-/* Popularity Styles */
-.tech-stack-popularity {
-  margin-top: 16px;
-}
-
-.tech-stack-popularity-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2px;
-}
-
-.tech-stack-popularity-label {
-  font-size: 12px;
-  font-weight: 500;
-  color: #718096;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.tech-stack-popularity-value {
-  font-size: 14px;
-  font-weight: 600;
-  color: #667eea;
-}
-
+/* Simplified Progress Bar - Only visual indicator */
 .tech-stack-progress-bar {
   width: 100%;
-  height: 6px;
+  height: 4px;
   background: #e2e8f0;
-  border-radius: 3px;
+  border-radius: 2px;
   overflow: hidden;
+  margin-top: 12px;
 }
 
 .tech-stack-progress-fill {
   height: 100%;
   background: linear-gradient(90deg, #667eea, #764ba2);
-  border-radius: 3px;
+  border-radius: 2px;
   transition: width 0.8s ease;
   position: relative;
 }
@@ -418,6 +419,16 @@
   .tech-stack-features {
     gap: 24px;
   }
+
+  .tech-stack-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .tech-stack-popularity-badge {
+    align-self: flex-start;
+  }
 }
 
 @media (max-width: 480px) {
@@ -427,18 +438,40 @@
     min-width: 0;
   }
   
+  .tech-stack-card {
+    padding: 15px;
+    position: relative;
+  }
+
   .tech-stack-card-header {
-    gap: 12px;
+    gap: 10px;
+    position: relative;
   }
   
   .tech-stack-logo {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
   }
   
   .tech-stack-logo-img {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .tech-stack-card-title {
+    font-size: 15px;
+    padding-right: 50px;
+  }
+
+  .tech-stack-popularity-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 38px;
+    height: 20px;
+    font-size: 10px;
+    padding: 0 6px;
+    z-index: 2;
   }
 }
 
@@ -463,50 +496,28 @@
   }
 }
 
-/* Add this at the end of your file for real SVG logos in tech stack cards */
-
-/* Example: Place SVGs inside your React/JSX, but style them here for consistency */
-.tech-logo-svg {
-  width: 40px;
-  height: 40px;
-  display: block;
-  margin: 0 auto;
-}
-
-/* Example brand backgrounds for SVGs */
-.tech-logo-react { background: #20232a; }
-.tech-logo-angular { background: #dd0031; }
-.tech-logo-vue { background: #35495e; }
-.tech-logo-nextjs { background: #000; }
-.tech-logo-typescript { background: #3178c6; }
-.tech-logo-tailwind { background: #06b6d4; }
-.tech-logo-vite { background: #646cff; }
-.tech-logo-webpack { background: #1c78c0; }
-.tech-logo-nodejs { background: #339933; }
-.tech-logo-python { background: #3776ab; }
-.tech-logo-java { background: #ed8b00; }
-.tech-logo-golang { background: #00add8; }
-.tech-logo-postgresql { background: #336791; }
-.tech-logo-mongodb { background: #47a248; }
-.tech-logo-redis { background: #dc382d; }
-.tech-logo-docker { background: #2496ed; }
-.tech-logo-reactnative { background: #20232a; }
-.tech-logo-flutter { background: #02569b; }
-.tech-logo-swift { background: #fa7343; }
-.tech-logo-kotlin { background: #7f52ff; }
-.tech-logo-ionic { background: #3880ff; }
-.tech-logo-xamarin { background: #3498db; }
-.tech-logo-cordova { background: #35434d; }
-.tech-logo-expo { background: #000020; }
-
-/* Optional: Add a white circle behind SVG for contrast */
-.tech-logo-svg-bg {
-  background: #fff;
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-}
+/* Enhanced brand-specific logo backgrounds for better visual contrast */
+.tech-stack-logo.tech-logo-react { background: linear-gradient(135deg, #61dafb, #21232a); }
+.tech-stack-logo.tech-logo-angular { background: linear-gradient(135deg, #dd0031, #c3002f); }
+.tech-stack-logo.tech-logo-vue { background: linear-gradient(135deg, #4fc08d, #35495e); }
+.tech-stack-logo.tech-logo-nextjs { background: linear-gradient(135deg, #000000, #333333); }
+.tech-stack-logo.tech-logo-typescript { background: linear-gradient(135deg, #3178c6, #235a97); }
+.tech-stack-logo.tech-logo-tailwind { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+.tech-stack-logo.tech-logo-nodejs { background: linear-gradient(135deg, #339933, #2d7d2d); }
+.tech-stack-logo.tech-logo-python { background: linear-gradient(135deg, #3776ab, #ffd43b); }
+.tech-stack-logo.tech-logo-java { background: linear-gradient(135deg, #ed8b00, #f89820); }
+.tech-stack-logo.tech-logo-mongodb { background: linear-gradient(135deg, #47a248, #3f8b40); }
+.tech-stack-logo.tech-logo-postgresql { background: linear-gradient(135deg, #336791, #2d5a87); }
+.tech-stack-logo.tech-logo-docker { background: linear-gradient(135deg, #2496ed, #0db7ed); }
+.tech-stack-logo.tech-logo-reactnative { background: linear-gradient(135deg, #61dafb, #21232a); }
+.tech-stack-logo.tech-logo-flutter { background: linear-gradient(135deg, #02569b, #027dcd); }
+.tech-stack-logo.tech-logo-swift { background: linear-gradient(135deg, #fa7343, #ff8c42); }
+.tech-stack-logo.tech-logo-kotlin { background: linear-gradient(135deg, #7f52ff, #9575ff); }
+.tech-stack-logo.tech-logo-ionic { background: linear-gradient(135deg, #3880ff, #5598ff); }
+.tech-stack-logo.tech-logo-xamarin { background: linear-gradient(135deg, #3498db, #5dade2); }
+.tech-stack-logo.tech-logo-tensorflow { background: linear-gradient(135deg, #ff6f00, #ff8f00); }
+.tech-stack-logo.tech-logo-pytorch { background: linear-gradient(135deg, #ee4c2c, #ff6b45); }
+.tech-stack-logo.tech-logo-pandas { background: linear-gradient(135deg, #150458, #2d1b69); }
+.tech-stack-logo.tech-logo-scikit { background: linear-gradient(135deg, #f7931e, #ffab40); }
+.tech-stack-logo.tech-logo-spark { background: linear-gradient(135deg, #e25a1c, #f06529); }
+.tech-stack-logo.tech-logo-jupyter { background: linear-gradient(135deg, #f37626, #f58220); }

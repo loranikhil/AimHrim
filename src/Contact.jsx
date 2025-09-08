@@ -93,7 +93,7 @@ const Contact = () => {
         <div className="trust-indicators">
           <div className="trust-item">
             <Users className="trust-icon" />
-            <span>500+ Successful Placements</span>
+            <span>3699+ Successful Placements</span>
           </div>
           <div className="trust-item">
             <Clock className="trust-icon" />

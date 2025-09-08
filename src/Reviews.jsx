@@ -3,15 +3,15 @@ import { Star, ChevronLeft, ChevronRight, Quote, Building2 } from 'lucide-react'
 import './Reviews.css';
 
 const Reviews = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentTranslate, setCurrentTranslate] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const [isSliding, setIsSliding] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
-  const [currentX, setCurrentX] = useState(0);
-  const [dragOffset, setDragOffset] = useState(0);
-  const autoSlideRef = useRef();
+  const [dragStartTranslate, setDragStartTranslate] = useState(0);
+  const animationRef = useRef();
   const trackRef = useRef();
+  const containerRef = useRef();
 
   const trustedCompanies = [
     {
@@ -82,131 +82,117 @@ const Reviews = () => {
     }
   ];
 
+  // Create seamless loop by duplicating items
+  const extendedCompanies = [...trustedCompanies, ...trustedCompanies, ...trustedCompanies];
+
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const itemsPerView = isMobile ? 1 : 3;
-  const maxIndex = Math.max(0, trustedCompanies.length - itemsPerView);
-
-  const nextSlide = () => {
-    if (isDragging) return;
-    setIsSliding(true);
-    setTimeout(() => setIsSliding(false), 500);
-    setCurrentIndex(prev => prev >= maxIndex ? 0 : prev + 1);
-  };
-
-  const prevSlide = () => {
-    if (isDragging) return;
-    setIsSliding(true);
-    setTimeout(() => setIsSliding(false), 500);
-    setCurrentIndex(prev => prev <= 0 ? maxIndex : prev - 1);
-  };
-
-  // Auto-slide functionality
+  // Continuous animation
   useEffect(() => {
-    if (isDragging) {
-      autoSlideRef.current && clearInterval(autoSlideRef.current);
-      return;
-    }
+    if (isHovered || isDragging) return;
 
-    autoSlideRef.current && clearInterval(autoSlideRef.current);
-    autoSlideRef.current = setInterval(() => {
-      setIsSliding(true);
-      setTimeout(() => setIsSliding(false), 500);
-      setCurrentIndex(prev => prev >= maxIndex ? 0 : prev + 1);
-    }, 4000);
+    const animate = () => {
+      setCurrentTranslate(prev => {
+        const speed = isMobile ? 0.5 : 0.3;
+        const newTranslate = prev - speed;
+        
+        // Reset when we've moved one full set
+        const cardWidth = isMobile ? 300 : 400;
+        const gap = isMobile ? 16 : 32;
+        const itemWidth = cardWidth + gap;
+        const resetPoint = -(trustedCompanies.length * itemWidth);
+        
+        if (newTranslate <= resetPoint) {
+          return 0;
+        }
+        
+        return newTranslate;
+      });
+      
+      animationRef.current = requestAnimationFrame(animate);
+    };
+    
+    animationRef.current = requestAnimationFrame(animate);
+    
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [isHovered, isDragging, isMobile, trustedCompanies.length]);
 
-    return () => clearInterval(autoSlideRef.current);
-  }, [maxIndex, itemsPerView, isDragging]);
+  // Manual navigation
+  const moveSlide = (direction) => {
+    const cardWidth = isMobile ? 300 : 400;
+    const gap = isMobile ? 16 : 32;
+    const itemWidth = cardWidth + gap;
+    
+    setCurrentTranslate(prev => {
+      const newTranslate = prev + (direction * itemWidth);
+      const resetPoint = -(trustedCompanies.length * itemWidth);
+      const maxPoint = itemWidth;
+      
+      if (newTranslate <= resetPoint) {
+        return 0;
+      } else if (newTranslate >= maxPoint) {
+        return resetPoint + itemWidth;
+      }
+      
+      return newTranslate;
+    });
+  };
 
-  // Enhanced touch and mouse drag handlers
+  // Drag functionality
   const handleDragStart = (e) => {
     setIsDragging(true);
     const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
     setStartX(clientX);
-    setCurrentX(clientX);
+    setDragStartTranslate(currentTranslate);
     
-    // Prevent text selection during drag
     if (e.type === 'mousedown') {
       e.preventDefault();
-      document.body.style.userSelect = 'none';
     }
   };
 
   const handleDragMove = (e) => {
     if (!isDragging) return;
     
-    e.preventDefault(); // Prevent default scrolling behavior
+    e.preventDefault();
     const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
-    setCurrentX(clientX);
     const diff = clientX - startX;
+    const newTranslate = dragStartTranslate + diff;
     
-    // Add some resistance at the boundaries
-    let adjustedDiff = diff;
-    if (currentIndex === 0 && diff > 0) {
-      adjustedDiff = diff * 0.3; // Resistance when at the beginning
-    } else if (currentIndex === maxIndex && diff < 0) {
-      adjustedDiff = diff * 0.3; // Resistance when at the end
-    }
-    
-    setDragOffset(adjustedDiff);
+    setCurrentTranslate(newTranslate);
   };
 
-  const handleDragEnd = (e) => {
+  const handleDragEnd = () => {
     if (!isDragging) return;
-    
     setIsDragging(false);
-    const diff = currentX - startX;
-    const threshold = isMobile ? 30 : 50; // Lower threshold for mobile
-    
-    // Re-enable text selection
-    document.body.style.userSelect = '';
-    
-    if (Math.abs(diff) > threshold) {
-      if (diff > 0 && currentIndex > 0) {
-        // Swiped right, go to previous
-        setIsSliding(true);
-        setTimeout(() => setIsSliding(false), 500);
-        setCurrentIndex(prev => prev - 1);
-      } else if (diff < 0 && currentIndex < maxIndex) {
-        // Swiped left, go to next
-        setIsSliding(true);
-        setTimeout(() => setIsSliding(false), 500);
-        setCurrentIndex(prev => prev + 1);
-      }
-    }
-    
-    // Reset drag state
-    setDragOffset(0);
-    setStartX(0);
-    setCurrentX(0);
   };
 
-  // Global event listeners for mouse events
+  // Mouse event listeners
   useEffect(() => {
     const handleMouseMove = (e) => handleDragMove(e);
-    const handleMouseUp = (e) => handleDragEnd(e);
-    
+    const handleMouseUp = () => handleDragEnd();
+
     if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove, { passive: false });
+      document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
     }
-    
+
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isDragging, startX, currentX, currentIndex, maxIndex]);
+  }, [isDragging, startX, dragStartTranslate]);
 
-  const renderStars = (rating) => {
-    return Array.from({ length: 5 }, (_, index) => (
+  const renderStars = (rating) =>
+    Array.from({ length: 5 }, (_, index) => (
       <Star
         key={index}
         className={`modern-star ${index < Math.floor(rating) ? 'modern-star-filled' : 'modern-star-empty'}`}
@@ -214,16 +200,6 @@ const Reviews = () => {
         fill={index < Math.floor(rating) ? '#fbbf24' : 'none'}
       />
     ));
-  };
-
-  const getTransformValue = () => {
-    const baseTransform = -currentIndex * (100 / itemsPerView);
-    if (isDragging && trackRef.current) {
-      const dragPercentage = (dragOffset / trackRef.current.offsetWidth) * 100;
-      return baseTransform + dragPercentage;
-    }
-    return baseTransform;
-  };
 
   return (
     <div className="modern-reviews-section">
@@ -240,23 +216,31 @@ const Reviews = () => {
         </div>
 
         <div className="modern-carousel-section">
-          <div className="modern-carousel-container">
-            <button 
-              className="modern-nav-btn modern-nav-prev" 
-              onClick={prevSlide}
-              aria-label="Previous reviews"
-              style={{display: isMobile ? 'none' : 'flex'}}
-            >
-              <ChevronLeft size={20} />
-            </button>
+          <div 
+            className="modern-carousel-container"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            {!isMobile && (
+              <button
+                className="modern-nav-btn modern-nav-prev"
+                onClick={() => moveSlide(1)}
+                aria-label="Previous reviews"
+              >
+                <ChevronLeft size={20} />
+              </button>
+            )}
 
-            <div className="modern-carousel-viewport">
-              <div 
+            <div 
+              ref={containerRef}
+              className="modern-carousel-viewport"
+            >
+              <div
                 ref={trackRef}
-                className={`modern-carousel-track${isSliding ? ' sliding' : ''}${isDragging ? ' dragging' : ''}`}
+                className="modern-carousel-track"
                 style={{
-                  transform: `translateX(${getTransformValue()}%)`,
-                  transition: isDragging ? 'none' : 'transform 0.5s cubic-bezier(0.4,0,0.2,1)',
+                  transform: `translateX(${currentTranslate}px)`,
+                  transition: isDragging ? 'none' : 'none', // Always smooth via requestAnimationFrame
                   cursor: isDragging ? 'grabbing' : 'grab'
                 }}
                 onMouseDown={handleDragStart}
@@ -264,8 +248,16 @@ const Reviews = () => {
                 onTouchMove={handleDragMove}
                 onTouchEnd={handleDragEnd}
               >
-                {trustedCompanies.map((company) => (
-                  <div key={company.id} className="modern-review-card">
+                {extendedCompanies.map((company, idx) => (
+                  <div 
+                    key={`${company.id}-${idx}`} 
+                    className="modern-review-card"
+                    style={{
+                      flexShrink: 0,
+                      width: isMobile ? '300px' : '400px',
+                      marginRight: isMobile ? '16px' : '32px'
+                    }}
+                  >
                     <div className="modern-card-header">
                       <Quote className="modern-quote-icon" size={24} />
                       <div className="modern-rating-section">
@@ -281,7 +273,7 @@ const Reviews = () => {
                     </div>
 
                     <div className="modern-card-footer">
-                      <div 
+                      <div
                         className="modern-company-avatar"
                         style={{ backgroundColor: company.color }}
                       >
@@ -302,26 +294,16 @@ const Reviews = () => {
               </div>
             </div>
 
-            <button 
-              className="modern-nav-btn modern-nav-next" 
-              onClick={nextSlide}
-              aria-label="Next reviews"
-              style={{display: isMobile ? 'none' : 'flex'}}
-            >
-              <ChevronRight size={20} />
-            </button>
-          </div>
-
-          {/* <div className="modern-indicators">
-            {Array.from({ length: Math.ceil(trustedCompanies.length / itemsPerView) }, (_, index) => (
+            {!isMobile && (
               <button
-                key={index}
-                className={`modern-indicator ${Math.floor(currentIndex / itemsPerView) === index ? 'modern-indicator-active' : ''}`}
-                onClick={() => setCurrentIndex(index * itemsPerView)}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div> */}
+                className="modern-nav-btn modern-nav-next"
+                onClick={() => moveSlide(-1)}
+                aria-label="Next reviews"
+              >
+                <ChevronRight size={20} />
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

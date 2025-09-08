@@ -4,6 +4,7 @@ import Header from "./Header";
 import Service from "./Service";
 import Tech from "./Tech";
 import About from "./about";
+import Mnc from "./Mnc"; 
 import Reviews from "./Reviews";
 import Contact from "./Contact";
 import Footer from "./Footer";
@@ -16,6 +17,7 @@ function App() {
       <Service />
       <Tech />
       <About />
+      <Mnc />
       <Reviews />
       <Contact />
       <Footer />

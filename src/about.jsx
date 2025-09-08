@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react'; 
 import { 
   Users, 
   Target, 
@@ -6,16 +6,19 @@ import {
   Globe, 
   Award, 
   ArrowRight,
-  CheckCircle2,
-  Lightbulb,
   Shield,
-  Rocket
+  Rocket,
+  Star,
+  TrendingUp,
+  Cpu,
+  Database
 } from 'lucide-react';
 import './about.css';
 
 const About = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState({});
+  const [activeCard, setActiveCard] = useState(null);
   const sectionRefs = useRef({});
 
   useEffect(() => {
@@ -55,231 +58,170 @@ const About = () => {
 
   const expertise = [
     {
-      icon: <Zap className="expertise-icon" />,
-      title: "Rapid Deployment",
-      description: "Lightning-fast talent acquisition with our streamlined process and extensive network of pre-vetted professionals.",
-      gradient: "from-amber-400 to-orange-500"
+      icon: <Cpu className="about-expertise-icon" />,
+      title: "AI-Powered Matching",
+      description: "Leverage cutting-edge algorithms to match talent with precision, ensuring perfect fit for your technical requirements and company culture.",
+      metrics: "95% Success Rate"
     },
     {
-      icon: <Target className="expertise-icon" />,
-      title: "Precision Matching",
-      description: "AI-powered algorithms combined with human insight to ensure perfect cultural and technical alignment.",
-      gradient: "from-blue-400 to-indigo-500"
+      icon: <TrendingUp className="about-expertise-icon" />,
+      title: "Scalable Solutions",
+      description: "From startup MVP teams to enterprise transformations, we adapt our approach to meet your unique scaling challenges.",
+      metrics: "500+ Projects"
     },
     {
-      icon: <Shield className="expertise-icon" />,
+      icon: <Shield className="about-expertise-icon" />,
       title: "Quality Assurance",
-      description: "Rigorous screening processes and continuous performance monitoring to guarantee exceptional results.",
-      gradient: "from-emerald-400 to-teal-500"
+      description: "Multi-layered vetting process including technical assessments, cultural fit analysis, and continuous performance monitoring.",
+      metrics: "99.8% Retention"
     },
     {
-      icon: <Rocket className="expertise-icon" />,
-      title: "Growth Partnership",
-      description: "Long-term strategic partnerships that scale with your business and technological evolution.",
-      gradient: "from-purple-400 to-pink-500"
+      icon: <Database className="about-expertise-icon" />,
+      title: "Data-Driven Insights",
+      description: "Comprehensive analytics and market intelligence to guide strategic talent decisions and optimize hiring outcomes.",
+      metrics: "Real-time Analytics"
     }
-  ];
-
-  const advantages = [
-    { text: "Industry-leading expertise across all tech domains", icon: <Lightbulb /> },
-    { text: "Global talent network with local market insights", icon: <Globe /> },
-    { text: "Agile methodologies adapted for modern workforces", icon: <Zap /> },
-    { text: "Comprehensive support throughout the engagement lifecycle", icon: <Shield /> }
   ];
 
   return (
     <section id="about" className="about-section">
-      {/* Dynamic Background */}
       <div 
         className="about-background-gradient"
         style={{
-          '--mouse-x': `${mousePosition.x}%`,
-          '--mouse-y': `${mousePosition.y}%`
+          background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(37, 99, 235, 0.05) 0%, transparent 50%)`
         }}
       />
       
       <div className="about-container">
-        {/* Hero Section */}
-        <div 
-          className={`about-hero ${isVisible.hero ? 'about-visible' : ''}`}
-          ref={el => sectionRefs.current.hero = el}
-        >
-          <div className="about-hero-content">
-            <div className="about-hero-badge">
-              <Award className="about-badge-icon" />
-              <span>Transforming IT Talent Acquisition</span>
-            </div>
-            
-            {/* <h1 className="about-hero-title">
-              Where Innovation Meets
-              <span className="about-title-accent"> Excellence</span>
-            </h1> */}
-            
-            {/* <p className="about-hero-description">
-              We don't just place talent—we architect careers and build the future of technology. 
-              Our sophisticated approach combines cutting-edge recruitment methodologies with deep 
-              industry expertise to create lasting partnerships that drive innovation.
-            </p> */}
-            
-            {/* <div className="about-hero-cta">
-              <button className="about-cta-primary">
-                Discover Our Approach
-                <ArrowRight className="about-cta-icon" />
-              </button>
-              <button className="about-cta-secondary">
-                View Success Stories
-              </button>
-            </div> */}
-          </div>
-    
-        </div>
-
         {/* Expertise Section */}
         <div 
-          className={`about-expertise ${isVisible.expertise ? 'about-visible' : ''}`}
+          className={`about-expertise ${isVisible.expertise ? 'about-animate-in' : ''}`}
           ref={el => sectionRefs.current.expertise = el}
         >
           <div className="about-section-header">
-            <div className="about-section-label">Our Expertise</div>
+            <span className="about-section-badge">Our Expertise</span>
             <h2 className="about-section-title">
-              Redefining Excellence in
-              <span className="about-text-gradient"> IT Staffing</span>
+              Why Leading Companies
+              <span className="about-title-gradient"> Choose Us</span>
             </h2>
+            <p className="about-section-subtitle">
+              We don't just fill positions—we architect the future of your technology teams
+            </p>
           </div>
           
           <div className="about-expertise-grid">
             {expertise.map((item, index) => (
               <div 
                 key={index} 
-                className="about-expertise-card"
-                style={{ '--delay': `${index * 0.1}s` }}
+                className={`about-expertise-card ${activeCard === index ? 'active' : ''}`}
+                onMouseEnter={() => setActiveCard(index)}
+                onMouseLeave={() => setActiveCard(null)}
+                style={{ animationDelay: `${index * 0.15}s` }}
               >
-                <div className={`about-card-gradient bg-gradient-to-br ${item.gradient}`}></div>
-                <div className="about-card-content">
-                  <div className="about-card-header">
-                    <div className="about-icon-wrapper">
-                      {item.icon}
-                    </div>
-                    <h3 className="about-card-title">{item.title}</h3>
+                <div className="about-card-header">
+                  <div className="about-card-icon-wrapper">
+                    {item.icon}
                   </div>
-                  <p className="about-card-description">{item.description}</p>
+                  <div className="about-card-text">
+                    <h3 className="about-card-title">{item.title}</h3>
+                    <p className="about-card-description">{item.description}</p>
+                  </div>
+                  <div className="about-card-metric">{item.metrics}</div>
                 </div>
-                <div className="about-card-overlay"></div>
+                <div className="about-card-hover-effect"></div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Vision Section */}
+        {/* Process Section */}
         <div 
-          className={`about-vision ${isVisible.vision ? 'about-visible' : ''}`}
-          ref={el => sectionRefs.current.vision = el}
+          className={`about-process ${isVisible.process ? 'about-animate-in' : ''}`}
+          ref={el => sectionRefs.current.process = el}
         >
-          <div className="about-vision-content">
-            <div className="about-vision-text">
-              <div className="about-section-label">Our Vision</div>
-              <h2 className="about-vision-title">
-                Pioneering the Future of
-                <span className="about-text-gradient"> Technology Careers</span>
-              </h2>
-              
-              <p className="about-vision-description">
-                We envision a world where exceptional talent seamlessly connects with groundbreaking 
-                opportunities. Our mission transcends traditional recruitment—we're building an ecosystem 
-                where innovation thrives, careers flourish, and organizations achieve unprecedented growth.
-              </p>
-              
-              <div className="about-advantages-list">
-                {advantages.map((advantage, index) => (
-                  <div key={index} className="about-advantage-item" style={{ '--delay': `${index * 0.1}s` }}>
-                    <div className="about-advantage-icon">
-                      {advantage.icon}
-                    </div>
-                    <span className="about-advantage-text">{advantage.text}</span>
-                  </div>
-                ))}
+          <div className="about-section-header">
+            <span className="about-section-badge">Our Process</span>
+            <h2 className="about-section-title">
+              Streamlined Path to
+              <span className="about-title-gradient"> Success</span>
+            </h2>
+          </div>
+          
+          <div className="about-process-steps">
+            <div className="about-step">
+              <div className="about-step-number">01</div>
+              <div className="about-step-content">
+                <h3 className="about-step-title">Discovery & Analysis</h3>
+                <p className="about-step-description">
+                  Deep dive into your technical requirements, company culture, and growth objectives
+                </p>
               </div>
             </div>
             
-            <div className="about-vision-visual">
-              <div className="about-floating-elements">
-                <div className="about-floating-card about-card-1">
-                  <Users className="about-floating-icon" />
-                  <div className="about-floating-content">
-                    <div className="about-floating-title">Global Network</div>
-                    <div className="about-floating-desc">Worldwide talent pool</div>
-                  </div>
-                </div>
-                
-                <div className="about-floating-card about-card-2">
-                  <Target className="about-floating-icon" />
-                  <div className="about-floating-content">
-                    <div className="about-floating-title">Precision Matching</div>
-                    <div className="about-floating-desc">AI-driven selection</div>
-                  </div>
-                </div>
-                
-                <div className="about-floating-card about-card-3">
-                  <Zap className="about-floating-icon" />
-                  <div className="about-floating-content">
-                    <div className="about-floating-title">Rapid Results</div>
-                    <div className="about-floating-desc">Lightning-fast delivery</div>
-                  </div>
-                </div>
+            <div className="about-step-connector"></div>
+            
+            <div className="about-step">
+              <div className="about-step-number">02</div>
+              <div className="about-step-content">
+                <h3 className="about-step-title">Talent Sourcing</h3>
+                <p className="about-step-description">
+                  AI-powered search across global networks combined with targeted headhunting
+                </p>
+              </div>
+            </div>
+            
+            <div className="about-step-connector"></div>
+            
+            <div className="about-step">
+              <div className="about-step-number">03</div>
+              <div className="about-step-content">
+                <h3 className="about-step-title">Precision Matching</h3>
+                <p className="about-step-description">
+                  Comprehensive evaluation including technical skills, cultural fit, and career alignment
+                </p>
+              </div>
+            </div>
+            
+            <div className="about-step-connector"></div>
+            
+            <div className="about-step">
+              <div className="about-step-number">04</div>
+              <div className="about-step-content">
+                <h3 className="about-step-title">Seamless Integration</h3>
+                <p className="about-step-description">
+                  Ongoing support and optimization to ensure long-term success and retention
+                </p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Commitment Section */}
-        {/* <div 
-          className={`about-commitment ${isVisible.commitment ? 'about-visible' : ''}`}
-          ref={el => sectionRefs.current.commitment = el}
+        {/* CTA Section */}
+        <div 
+          className={`about-cta ${isVisible.cta ? 'about-animate-in' : ''}`}
+          ref={el => sectionRefs.current.cta = el}
         >
-          <div className="about-commitment-container">
-            <div className="about-commitment-content">
-              <div className="about-commitment-badge">
-                <Award className="about-badge-icon" />
-                <span className='about-commitment-text'>Our Commitment</span>
+          
+          <div className="about-cta-visual">
+            <div className="about-orbit-container">
+              <div className="about-orbit-ring orbit-1">
+                <div className="about-orbit-dot dot-1"><Users /></div>
               </div>
-              <h2 className="about-commitment-title">
-                Our Commitment to
-                <span className="about-text-gradient"> Excellence</span>
-              </h2>
-              
-              <p className="about-commitment-description">
-                Every partnership we forge is built on trust, innovation, and mutual success. 
-                We don't just meet expectations—we redefine what's possible in IT talent acquisition.
-              </p>
-              
-              <div className="about-commitment-features">
-                <div className="about-feature-item">
-                  <CheckCircle2 className="about-feature-icon" />
-                  <span>Dedicated Account Management</span>
-                </div>
-                <div className="about-feature-item">
-                  <CheckCircle2 className="about-feature-icon" />
-                  <span>Continuous Quality Monitoring</span>
-                </div>
-                <div className="about-feature-item">
-                  <CheckCircle2 className="about-feature-icon" />
-                  <span>Strategic Growth Partnership</span>
-                </div>
+              <div className="about-orbit-ring orbit-2">
+                <div className="about-orbit-dot dot-2"><Target /></div>
+                <div className="about-orbit-dot dot-3"><Zap /></div>
               </div>
-            </div>  
-            
-            <div className="about-commitment-visual">
-              <div className="about-pulse-container">
-                <div className="about-pulse-ring about-ring-1"></div>
-                <div className="about-pulse-ring about-ring-2"></div>
-                <div className="about-pulse-ring about-ring-3"></div>
-                <div className="about-pulse-center">
-                  <Award className="about-pulse-icon" />
-                </div>
+              <div className="about-orbit-ring orbit-3">
+                <div className="about-orbit-dot dot-4"><Shield /></div>
+                <div className="about-orbit-dot dot-5"><Rocket /></div>
+                <div className="about-orbit-dot dot-6"><Star /></div>
+              </div>
+              <div className="about-orbit-center">
+                <Award />
               </div>
             </div>
           </div>
-        </div> */}
+        </div>
       </div>
     </section>
   );

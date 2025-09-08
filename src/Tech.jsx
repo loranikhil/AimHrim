@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Code, Smartphone, Server, Globe, ChevronRight, Zap, Shield, Layers } from 'lucide-react';
+import { Code, Smartphone, Server, Globe, ChevronRight, Zap, Shield, Layers, Brain } from 'lucide-react';
 import './Tech.css';
 
 const TechStack = () => {
@@ -41,13 +41,12 @@ const TechStack = () => {
           description: 'Typed JavaScript superset',
           popularity: 92
         },
-       {
+        {
           name: 'Tailwind CSS',
           logo: 'https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg',
           description: 'Utility-first CSS framework',
           popularity: 85
         }
-
       ]
     },
     backend: {
@@ -135,13 +134,57 @@ const TechStack = () => {
           popularity: 72
         }
       ]
+    },
+    dataai: {
+      title: 'Data & AI Technologies',
+      icon: Brain,
+      description: 'Advanced machine learning, AI, and data processing solutions',
+      technologies: [
+        {
+          name: 'TensorFlow',
+          logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg',
+          description: 'Open-source ML framework',
+          popularity: 92
+        },
+        {
+          name: 'PyTorch',
+          logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg',
+          description: 'Dynamic neural networks',
+          popularity: 89
+        },
+        {
+          name: 'Pandas',
+          logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg',
+          description: 'Data manipulation library',
+          popularity: 94
+        },
+        {
+          name: 'Scikit-learn',
+          logo: 'https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg',
+          description: 'Machine learning library',
+          popularity: 88
+        },
+        {
+          name: 'Apache Spark',
+          logo: 'https://www.vectorlogo.zone/logos/apache_spark/apache_spark-icon.svg',
+          description: 'Big data processing',
+          popularity: 85
+        },
+        {
+          name: 'Jupyter',
+          logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jupyter/jupyter-original.svg',
+          description: 'Interactive computing',
+          popularity: 91
+        }
+      ]
     }
   };
 
   const categoryIcons = {
     frontend: Globe,
     backend: Server,
-    mobile: Smartphone
+    mobile: Smartphone,
+    dataai: Brain
   };
 
   return (
@@ -151,14 +194,14 @@ const TechStack = () => {
         <div className="tech-stack-header">
           <div className="tech-stack-badge">
             <Code className="tech-stack-badge-icon" />
-            <span>Technologies We Master</span>
+            <span>We Are Limiting Ourselves To</span>
           </div>
           <h2 className="tech-stack-title">
             Cutting-Edge Tech Stack
           </h2>
           <p className="tech-stack-subtitle">
             We specialize in the most in-demand technologies across frontend, backend, 
-            and mobile development to deliver exceptional digital solutions.
+            mobile development, and AI/data science to deliver exceptional digital solutions.
           </p>
         </div>
 
@@ -210,22 +253,19 @@ const TechStack = () => {
                     />
                   </div>
                   <div className="tech-stack-card-info">
-                    <h4 className="tech-stack-card-title">{tech.name}</h4>
+                    <div className="tech-stack-title-row">
+                      <h4 className="tech-stack-card-title">{tech.name}</h4>
+                      <span className="tech-stack-popularity-badge">{tech.popularity}%</span>
+                    </div>
                     <p className="tech-stack-card-desc">{tech.description}</p>
                   </div>
                 </div>
                 
-                <div className="tech-stack-popularity">
-                  <div className="tech-stack-popularity-header">
-                    <span className="tech-stack-popularity-label">Popularity</span>
-                    <span className="tech-stack-popularity-value">{tech.popularity}%</span>
-                  </div>
-                  <div className="tech-stack-progress-bar">
-                    <div 
-                      className="tech-stack-progress-fill"
-                      style={{ width: `${tech.popularity}%` }}
-                    />
-                  </div>
+                <div className="tech-stack-progress-bar">
+                  <div 
+                    className="tech-stack-progress-fill"
+                    style={{ width: `${tech.popularity}%` }}
+                  />
                 </div>
               </div>
             ))}
