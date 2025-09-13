@@ -1,377 +1,180 @@
-/* Modern Reviews Section */
-.modern-reviews-section {
-  min-height: 100vh;
-  background: #f8f9fa;
-  display: flex;
-  align-items: center;
-  padding: 2rem 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+/* Section */
+
+.staffing-testimonial-section {
+  padding: 4rem 1rem;
+  background: #fafafa;
+  width: 100%;
+  max-width: 100vw;
   overflow: hidden;
-  margin-top: -30px;
 }
 
-.modern-reviews-container {
+
+.staffing-testimonial-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
-  width: 100%;
+  position: relative;
 }
 
-/* Header Section */
-.modern-reviews-header {
+/* Heading */
+.staffing-testimonial-heading {
   text-align: center;
-  margin-bottom: 4rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 2.5rem;
 }
 
-.modern-header-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #e3e7ee;
-  backdrop-filter: blur(10px);
-  border: 1px solid #b6c2d1;
-  padding: 0.5rem 1rem;
-  border-radius: 50px;
-  color: #2563eb;
-  font-size: 0.875rem;
-  font-weight: 500;
-  margin-bottom: 1.5rem;
-}
-
-.modern-reviews-title {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 800;
-  background: linear-gradient(90deg, #ff9800 0%, #6d28d9 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 0 0 1rem 0;
-  letter-spacing: -0.02em;
-}
-
-.modern-reviews-subtitle {
-  font-size: 1.125rem;
-  color: #495057;
-  margin: 0;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Carousel Section */
-.modern-carousel-section {
+/* Slider & Track */
+.staffing-testimonial-slider {
   position: relative;
   overflow: hidden;
+  padding-top: 12px; /* 👈 gives breathing room for hover lift */
 }
 
-.modern-carousel-container {
+
+.staffing-testimonial-track {
   display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-  position: relative;
+  gap: 2rem;
+  width: max-content;
+  will-change: transform;
+  animation: scroll-left 40s linear infinite;
 }
 
-.modern-nav-btn {
-  background: #e3e7ee;
-  backdrop-filter: blur(10px);
-  border: 1px solid #b6c2d1;
+@keyframes scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%); /* move left by one copy */
+  }
+}
+/* Card */
+.staffing-testimonial-card {
+  flex: 0 0 300px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); */
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.staffing-testimonial-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Quote & Text */
+.staffing-testimonial-quote-wrapper {
+  margin-bottom: 0.5rem;
+}
+.staffing-testimonial-quote-icon {
+  color: #e0e0e0;
+  width: 40px;
+  height: 40px;
+}
+.staffing-testimonial-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 0.5rem;
+  font-style: italic;
+  min-height: 80px;
+}
+
+/* Author */
+.staffing-testimonial-author {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.staffing-testimonial-avatar {
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+.staffing-testimonial-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.staffing-testimonial-author-name {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #4a90e2;
+  margin-bottom: 0.25rem;
+}
+.staffing-testimonial-company-name {
+  font-size: 0.85rem;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Arrows */
+.staffing-testimonial-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
   width: 48px;
   height: 48px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  color: #2563eb;
-  flex-shrink: 0;
   z-index: 10;
-  position: relative;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  color: #333;
+}
+.staffing-testimonial-nav:hover {
+  background: white;
+  transform: translateY(-50%) scale(1.05);
+}
+.staffing-testimonial-nav-prev {
+  left: 10px;
+}
+.staffing-testimonial-nav-next {
+  right: 10px;
 }
 
-.modern-nav-btn:hover {
-  background: #dbeafe;
-  border-color: #2563eb;
-  color: #2563eb;
-  transform: scale(1.05);
-}
-
-.modern-carousel-viewport {
-  flex: 1;
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-}
-
-.modern-carousel-track {
-  display: flex;
-  will-change: transform;
-  backface-visibility: hidden;
-  transform-style: preserve-3d;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-}
-
-/* Review Cards */
-.modern-review-card {
-  background: #fff;
-  backdrop-filter: blur(20px);
-  border: 1px solid #e3e7ee;
-  border-radius: 24px;
-  padding: 2rem;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 280px;
-}
-
-.modern-review-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #e3e7ee, transparent);
-}
-
-.modern-review-card:hover {
-  transform: translateY(-8px);
-  background: #f1f5f9;
-  border-color: #2563eb;
-  box-shadow: 0 20px 40px rgba(44, 62, 80, 0.08);
-}
-
-/* Card Header */
-.modern-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1.5rem;
-}
-
-.modern-quote-icon {
-  color: #2563eb;
-  opacity: 0.7;
-}
-
-.modern-rating-section {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.modern-stars {
-  display: flex;
-  gap: 2px;
-}
-
-.modern-star {
-  transition: all 0.2s ease;
-}
-
-.modern-star-filled {
-  color: #fbbf24;
-}
-
-.modern-star-empty {
-  color: #b6c2d1;
-}
-
-.modern-rating-number {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #2563eb;
-  margin-left: 0.25rem;
-}
-
-/* Card Content */
-.modern-card-content {
-  flex: 1;
-  margin-bottom: 2rem;
-}
-
-.modern-review-text {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #495057;
-  margin: 0;
-  font-weight: 400;
-}
-
-/* Card Footer */
-.modern-card-footer {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-top: auto;
-}
-
-.modern-company-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  color: #fff;
-  font-size: 1rem;
-  flex-shrink: 0;
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(135deg, #2563eb 0%, #10b981 100%);
-}
-
-.modern-company-avatar::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(45deg, rgba(255, 255, 255, 0.08), transparent);
-}
-
-.modern-company-info {
-  flex: 1;
-}
-
-.modern-company-name {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #212529;
-  margin: 0 0 0.25rem 0;
-}
-
-.modern-reviewer-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.modern-reviewer-name {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #2563eb;
-}
-
-.modern-reviewer-title {
-  font-size: 0.75rem;
-  color: #6c757d;
-  margin-top: 0.125rem;
-}
-/* Mobile Responsive - FIXED VERSION */
-@media (max-width: 767px) {
-  .modern-reviews-section {
-    padding: 60px 0;
-    margin-top: -160px;
-  }
-
-  .modern-reviews-container {
-    padding: 0 16px;
-  }
-
-  .modern-reviews-header {
-    margin-bottom: 40px;
-  }
-
-  .modern-reviews-title {
-    font-size: 2rem;
-  }
-
-  .modern-reviews-subtitle {
-    font-size: 16px;
-    padding: 0;
-  }
-
-  .modern-carousel-container {
-    gap: 0;
-    margin-bottom: 30px;
-  }
-
-  .modern-nav-btn {
-    display: none !important;
-  }
-
-  .modern-carousel-viewport {
-    width: 100vw;
-    margin-left: -16px;
-    padding-left: 16px;
-    padding-right: 16px; /* ADD THIS - matches left padding */
-  }
-
-  .modern-review-card {
-    padding: 20px;
-    border-radius: 16px;
-    min-height: 260px;
-  }
-
-  .modern-card-header {
-    margin-bottom: 16px;
-  }
-
-  .modern-card-content {
-    margin-bottom: 20px;
-  }
-
-  .modern-review-text {
-    font-size: 14px;
-    line-height: 1.5;
-  }
-
-  .modern-company-avatar {
-    width: 36px;
-    height: 36px;
-    font-size: 14px;
-  }
-
-  .modern-company-name {
-    font-size: 16px;
-  }
-
-  .modern-reviewer-name {
-    font-size: 13px;
-  }
-
-  .modern-reviewer-title {
-    font-size: 11px;
+/* Responsive */
+@media (max-width: 1024px) {
+  .staffing-testimonial-card {
+    flex: 0 0 260px;
+    padding: 1.75rem 1.25rem;
   }
 }
-
-/* Extra Small Mobile - FIXED VERSION */
-@media (max-width: 480px) {
-  .modern-reviews-container {
-    padding: 0; /* Remove container padding */
+@media (max-width: 768px) {
+  .staffing-testimonial-card {
+    flex: 0 0 240px;
+    padding: 1.5rem 1rem;
   }
-
-  .modern-reviews-header {
-    padding: 0 12px; /* Add padding to header */
+  .staffing-testimonial-nav {
+    width: 44px;
+    height: 44px;
   }
-
-  .modern-carousel-track {
-    padding: 0 12px; /* Add padding to track */
+}
+@media (max-width: 640px) {
+  .staffing-testimonial-card {
+    flex: 0 0 220px;
+    padding: 1.25rem 0.75rem;
   }
-
-  .modern-review-card {
-    padding: 16px;
-    min-height: 240px;
-    width: 260px; /* Slightly smaller for extra small screens */
+  .staffing-testimonial-nav {
+    width: 50px;
+    height: 50px;
   }
-
-  .modern-review-card:last-child {
-    margin-right: 12px; /* Add margin to last card for right spacing */
+  .staffing-testimonial-nav-prev {
+    left: 5px;
   }
-
-  .modern-reviews-title {
-    font-size: 1.75rem;
-  }
-
-  .modern-header-badge {
-    font-size: 12px;
-    padding: 8px 12px;
+  .staffing-testimonial-nav-next {
+    right: 5px;
   }
 }

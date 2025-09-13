@@ -1,105 +1,85 @@
-import React from 'react';
-import { ArrowRight, Shield, Users, Zap, CheckCircle } from 'lucide-react';
-import './Hero.css';
+import React, { useState, useEffect } from "react";
+import { Laptop, Users, Database, User, ArrowRight, CheckCircle, Briefcase } from "lucide-react";
+import "./Hero.css";
 
 const Hero = () => {
+  const [activeAnimation, setActiveAnimation] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveAnimation((prev) => (prev + 1) % 4);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <section className="hero">
+    <main className="hero-section modern-gradient-bg">
       <div className="hero-container">
-        <div className="hero-content">
+        {/* Left Content */}
+        <div className="hero-content fade-in-up">
           <div className="hero-badge">
-            <Shield className="badge-icon" />
-            <span>Premier IT Solutions Provider</span>
+            <span className="badge-text">HIRE EXPERTS OR BE HIRED</span>
           </div>
-          
-          <h1 className="hero-title">
-            Transforming Businesses Through
-            <span className="title-highlight"> Strategic IT Excellence</span>
-          </h1>
-          
+          <h1 className="hero-title">Recruitment the way it should be.</h1>
           <p className="hero-description">
-            Aimhrim delivers cutting-edge IT consulting and staffing solutions that drive 
-            innovation, optimize operations, and accelerate growth for forward-thinking organizations.
+            AimHrim connects top IT talent with leading companies, powering digital transformation.
+            We deliver flexible staffing solutions for contract, project, and permanent roles. Build your dream tech team with our expert recruiters and proven process.
           </p>
-          
-          <div className="hero-stats">
-            <div className="stat-item">
-              <div className="stat-number">500+</div>
-              <div className="stat-label">Projects Delivered</div>
-            </div>
-            <div className="stat-divider"></div>
-            <div className="stat-item">
-              <div className="stat-number">98%</div>
-              <div className="stat-label">Client Satisfaction</div>
-            </div>
-            <div className="stat-divider"></div>
-            <div className="stat-item">
-              <div className="stat-number">24/7</div>
-              <div className="stat-label">Support Available</div>
-            </div>
-          </div>
-          
           <div className="hero-actions">
-            <button className="btn-primary">
-              Get Started
-              <ArrowRight className="btn-icon" />
-            </button>
-            <button className="btn-secondary">
-              Learn More
-            </button>
-          </div>
-          
-          <div className="hero-features">
-            <div className="feature-item">
-              <CheckCircle className="feature-icon" />
-              <span>Enterprise-Grade Security</span>
-            </div>
-            <div className="feature-item">
-              <CheckCircle className="feature-icon" />
-              <span>Scalable Solutions</span>
-            </div>
-            <div className="feature-item">
-              <CheckCircle className="feature-icon" />
-              <span>Expert Team</span>
-            </div>
+            <button className="get-connected-btn shine-anim">GET CONNECTED</button>
           </div>
         </div>
-        
-        <div className="hero-visual">
-          <div className="visual-card">
-            <div className="card-header">
-              <Users className="card-icon" />
-              <div className="card-title">IT Consulting</div>
+
+        {/* Right Animation */}
+        <div className="hero-animation">
+          <div className="animation-container">
+            <div className="central-hub">
+              <Briefcase size={32} className="hub-icon" />
+              <div className="hub-pulse"></div>
             </div>
-            <div className="card-content">
-              <div className="progress-bar">
-                <div className="progress-fill" style={{width: '92%'}}></div>
+
+            <div className={`candidate candidate-1 ${activeAnimation === 0 ? "active" : ""}`}>
+              <User size={24} /> <div className="skill-badge">React</div>
+            </div>
+            <div className={`candidate candidate-2 ${activeAnimation === 1 ? "active" : ""}`}>
+              <User size={24} /> <div className="skill-badge">Node.js</div>
+            </div>
+            <div className={`candidate candidate-3 ${activeAnimation === 2 ? "active" : ""}`}>
+              <User size={24} /> <div className="skill-badge">Python</div>
+            </div>
+            <div className={`candidate candidate-4 ${activeAnimation === 3 ? "active" : ""}`}>
+              <User size={24} /> <div className="skill-badge">DevOps</div>
+            </div>
+
+            <div className="employer employer-1">
+              <Laptop size={24} /><div className="job-opening">Frontend Dev</div>
+            </div>
+            <div className="employer employer-2">
+              <Database size={24} /><div className="job-opening">Backend Dev</div>
+            </div>
+            <div className="employer employer-3">
+              <Users size={24} /><div className="job-opening">Full Stack</div>
+            </div>
+
+            <div className="connection-lines">
+              <div className={`connection-line line-1 ${activeAnimation === 0 ? "active" : ""}`}></div>
+              <div className={`connection-line line-2 ${activeAnimation === 1 ? "active" : ""}`}></div>
+              <div className={`connection-line line-3 ${activeAnimation === 2 ? "active" : ""}`}></div>
+              <div className={`connection-line line-4 ${activeAnimation === 3 ? "active" : ""}`}></div>
+            </div>
+
+            <div className="success-indicators">
+              <div className="success-icon success-1">
+                <CheckCircle size={20} /><span>Match Found</span>
               </div>
-              <span className="progress-label">Digital Transformation</span>
-            </div>
-          </div>
-          
-          <div className="visual-card">
-            <div className="card-header">
-              <Zap className="card-icon" />
-              <div className="card-title">Staff Augmentation</div>
-            </div>
-            <div className="card-content">
-              <div className="progress-bar">
-                <div className="progress-fill" style={{width: '88%'}}></div>
+              <div className="success-icon success-2">
+                <ArrowRight size={16} /><span>Hired</span>
               </div>
-              <span className="progress-label">Talent Acquisition</span>
             </div>
-          </div>
-          
-          <div className="floating-elements">
-            <div className="floating-dot dot-1"></div>
-            <div className="floating-dot dot-2"></div>
-            <div className="floating-dot dot-3"></div>
           </div>
         </div>
       </div>
-    </section>
+    </main>
   );
 };
 

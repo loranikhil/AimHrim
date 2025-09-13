@@ -1,312 +1,186 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Star, ChevronLeft, ChevronRight, Quote, Building2 } from 'lucide-react';
-import './Reviews.css';
+import React, { useEffect, useRef, useState } from "react";
+import { Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import "./Reviews.css";
+
+const reviewsData = [
+  {
+    text: "AimHrim helped us find top-notch engineers in record time!",
+    name: "Ravi Sharma",
+    company: "TechNova",
+    image: "https://i.pravatar.cc/150?img=1",
+  },
+  {
+    text: "The process was smooth, professional, and highly effective.",
+    name: "Ananya Patel",
+    company: "FinEdge",
+    image: "https://i.pravatar.cc/150?img=2",
+  },
+  {
+    text: "Best staffing partner we’ve ever worked with.",
+    name: "Karan Mehta",
+    company: "SoftCore Solutions",
+    image: "https://i.pravatar.cc/150?img=3",
+  },
+  {
+    text: "Great communication and amazing candidates delivered.",
+    name: "Priya Singh",
+    company: "CloudZen",
+    image: "https://i.pravatar.cc/150?img=4",
+  },
+];
+
+const SPEED = 0.5; // pixels per frame
 
 const Reviews = () => {
-  const [currentTranslate, setCurrentTranslate] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [dragStartTranslate, setDragStartTranslate] = useState(0);
-  const animationRef = useRef();
-  const trackRef = useRef();
-  const containerRef = useRef();
+  const trackRef = useRef(null);
+  const cardRef = useRef(null);
+  const animationFrameId = useRef(null);
+  const paused = useRef(false);
+  const copyWidth = useRef(0);
 
-  const trustedCompanies = [
-    {
-      id: 1,
-      name: "TechFlow Solutions",
-      logo: "TF",
-      rating: 4.8,
-      reviewText: "Outstanding service! They helped us find skilled developers quickly. Their screening process is thorough and the candidates exceeded our expectations.",
-      reviewer: "Sarah Chen",
-      position: "CTO",
-      company: "StartupTech Inc",
-      color: "#3b82f6"
-    },
-    {
-      id: 2,
-      name: "DevStaff Pro",
-      logo: "DS",
-      rating: 4.9,
-      reviewText: "Best IT staffing agency we've worked with. They understand our technical requirements and deliver quality talent consistently.",
-      reviewer: "Michael Rodriguez",
-      position: "Engineering Manager",
-      company: "CloudCorp",
-      color: "#10b981"
-    },
-    {
-      id: 3,
-      name: "CodeCraft Staffing",
-      logo: "CC",
-      rating: 4.7,
-      reviewText: "Professional team with deep understanding of tech roles. They matched us with perfect candidates for our React and Node.js positions.",
-      reviewer: "Emily Watson",
-      position: "HR Director",
-      company: "TechVenture Ltd",
-      color: "#8b5cf6"
-    },
-    {
-      id: 4,
-      name: "TalentBridge IT",
-      logo: "TB",
-      rating: 4.8,
-      reviewText: "Excellent communication and fast turnaround. They provided skilled full-stack developers who integrated seamlessly into our team.",
-      reviewer: "David Park",
-      position: "Product Manager",
-      company: "InnovateLabs",
-      color: "#f59e0b"
-    },
-    {
-      id: 5,
-      name: "NextGen Staffing",
-      logo: "NG",
-      rating: 4.6,
-      reviewText: "Great experience! They understood our company culture and found developers who fit perfectly both technically and culturally.",
-      reviewer: "Jessica Liu",
-      position: "VP of Engineering",
-      company: "DataFlow Systems",
-      color: "#ef4444"
-    },
-    {
-      id: 6,
-      name: "EliteCode Partners",
-      logo: "EC",
-      rating: 4.9,
-      reviewText: "Top-notch service with exceptional attention to detail. Their candidates are pre-vetted and ready to contribute from day one.",
-      reviewer: "Robert Kumar",
-      position: "Technical Lead",
-      company: "ScaleUp Tech",
-      color: "#06b6d4"
-    }
-  ];
+  // We store offset in a ref for immediate mutation, and useState for render update.
+  const offsetRef = useRef(0);
+  const [, setRender] = useState(0); // dummy state to trigger re-render
 
-  // Create seamless loop by duplicating items
-  const extendedCompanies = [...trustedCompanies, ...trustedCompanies, ...trustedCompanies];
+  // Duplicate reviews for seamless infinite scroll
+  const looped = [...reviewsData, ...reviewsData];
 
+  // Setup copyWidth once track renders
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    if (!trackRef.current) return;
+    copyWidth.current = trackRef.current.scrollWidth / 2;
   }, []);
 
-  // Continuous animation
+  // Animation loop for auto-scroll
   useEffect(() => {
-    if (isHovered || isDragging) return;
-
-    const animate = () => {
-      setCurrentTranslate(prev => {
-        const speed = isMobile ? 0.5 : 0.3;
-        const newTranslate = prev - speed;
-        
-        // Reset when we've moved one full set
-        const cardWidth = isMobile ? 300 : 400;
-        const gap = isMobile ? 16 : 32;
-        const itemWidth = cardWidth + gap;
-        const resetPoint = -(trustedCompanies.length * itemWidth);
-        
-        if (newTranslate <= resetPoint) {
-          return 0;
+    const step = () => {
+      if (!paused.current) {
+        offsetRef.current -= SPEED;
+        if (Math.abs(offsetRef.current) >= copyWidth.current) {
+          offsetRef.current += copyWidth.current;
         }
-        
-        return newTranslate;
-      });
-      
-      animationRef.current = requestAnimationFrame(animate);
-    };
-    
-    animationRef.current = requestAnimationFrame(animate);
-    
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
+        if (trackRef.current) {
+          trackRef.current.style.transform = `translateX(${offsetRef.current}px)`;
+        }
       }
+      animationFrameId.current = requestAnimationFrame(step);
     };
-  }, [isHovered, isDragging, isMobile, trustedCompanies.length]);
 
-  // Manual navigation
-  const moveSlide = (direction) => {
-    const cardWidth = isMobile ? 300 : 400;
-    const gap = isMobile ? 16 : 32;
-    const itemWidth = cardWidth + gap;
-    
-    setCurrentTranslate(prev => {
-      const newTranslate = prev + (direction * itemWidth);
-      const resetPoint = -(trustedCompanies.length * itemWidth);
-      const maxPoint = itemWidth;
-      
-      if (newTranslate <= resetPoint) {
-        return 0;
-      } else if (newTranslate >= maxPoint) {
-        return resetPoint + itemWidth;
-      }
-      
-      return newTranslate;
-    });
-  };
+    animationFrameId.current = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animationFrameId.current);
+  }, []);
 
-  // Drag functionality
-  const handleDragStart = (e) => {
-    setIsDragging(true);
-    const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
-    setStartX(clientX);
-    setDragStartTranslate(currentTranslate);
-    
-    if (e.type === 'mousedown') {
-      e.preventDefault();
+  // Pause/resume handlers
+  const pause = () => (paused.current = true);
+  const resume = () => (paused.current = false);
+
+  // Scroll by one card width on arrow click
+  const scrollByCard = (direction = "right") => {
+    if (!trackRef.current || !cardRef.current) return;
+
+    // Get gap (fallback to 24 if invalid)
+    const styles = getComputedStyle(trackRef.current);
+    const gap = parseFloat(styles.columnGap || styles.gap) || 24;
+    const cardWidth = cardRef.current.offsetWidth + gap;
+
+    // Pause auto-scroll temporarily
+    pause();
+    setTimeout(resume, 2000);
+
+    // Calculate new offset
+    let nextOffset =
+      direction === "right"
+        ? offsetRef.current - cardWidth
+        : offsetRef.current + cardWidth;
+
+    // Wrap offset within one copy width to maintain infinite scroll illusion
+    if (Math.abs(nextOffset) >= copyWidth.current) {
+      nextOffset += copyWidth.current;
     }
-  };
-
-  const handleDragMove = (e) => {
-    if (!isDragging) return;
-    
-    e.preventDefault();
-    const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
-    const diff = clientX - startX;
-    const newTranslate = dragStartTranslate + diff;
-    
-    setCurrentTranslate(newTranslate);
-  };
-
-  const handleDragEnd = () => {
-    if (!isDragging) return;
-    setIsDragging(false);
-  };
-
-  // Mouse event listeners
-  useEffect(() => {
-    const handleMouseMove = (e) => handleDragMove(e);
-    const handleMouseUp = () => handleDragEnd();
-
-    if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+    if (nextOffset > 0) {
+      nextOffset -= copyWidth.current;
     }
 
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [isDragging, startX, dragStartTranslate]);
+    offsetRef.current = nextOffset;
 
-  const renderStars = (rating) =>
-    Array.from({ length: 5 }, (_, index) => (
-      <Star
-        key={index}
-        className={`modern-star ${index < Math.floor(rating) ? 'modern-star-filled' : 'modern-star-empty'}`}
-        size={16}
-        fill={index < Math.floor(rating) ? '#fbbf24' : 'none'}
-      />
-    ));
+    // Apply transform immediately
+    if (trackRef.current) {
+      trackRef.current.style.transition = "transform 0.4s ease-in-out";
+      trackRef.current.style.transform = `translateX(${offsetRef.current}px)`;
+    }
+
+    // Remove transition after animation completes to allow instant updates from auto-scroll
+    setTimeout(() => {
+      if (trackRef.current) {
+        trackRef.current.style.transition = "";
+      }
+    }, 400);
+
+    // Force a re-render to sync if necessary (optional)
+    setRender((r) => r + 1);
+  };
 
   return (
-    <div className="modern-reviews-section">
-      <div className="modern-reviews-container">
-        <div className="modern-reviews-header">
-          <div className="modern-header-badge">
-            <Building2 size={20} />
-            <span>Trusted Partners</span>
-          </div>
-          <h2 className="modern-reviews-title">What Our Clients Say</h2>
-          <p className="modern-reviews-subtitle">
-            Leading tech companies trust us with their staffing needs
-          </p>
-        </div>
+    <section
+      className="staffing-testimonial-section"
+      aria-label="Client testimonials"
+    >
+      <div className="staffing-testimonial-container">
+        <h2 className="staffing-testimonial-heading">What Our Clients Say</h2>
 
-        <div className="modern-carousel-section">
-          <div 
-            className="modern-carousel-container"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            {!isMobile && (
-              <button
-                className="modern-nav-btn modern-nav-prev"
-                onClick={() => moveSlide(1)}
-                aria-label="Previous reviews"
-              >
-                <ChevronLeft size={20} />
-              </button>
-            )}
-
-            <div 
-              ref={containerRef}
-              className="modern-carousel-viewport"
-            >
+        <div
+          className="staffing-testimonial-slider"
+          onMouseEnter={pause}
+          onMouseLeave={resume}
+          onFocus={pause}
+          onBlur={resume}
+        >
+          <div className="staffing-testimonial-track" ref={trackRef}>
+            {looped.map((review, i) => (
               <div
-                ref={trackRef}
-                className="modern-carousel-track"
-                style={{
-                  transform: `translateX(${currentTranslate}px)`,
-                  transition: isDragging ? 'none' : 'none', // Always smooth via requestAnimationFrame
-                  cursor: isDragging ? 'grabbing' : 'grab'
-                }}
-                onMouseDown={handleDragStart}
-                onTouchStart={handleDragStart}
-                onTouchMove={handleDragMove}
-                onTouchEnd={handleDragEnd}
+                key={i}
+                className="staffing-testimonial-card"
+                ref={i === 0 ? cardRef : null}
               >
-                {extendedCompanies.map((company, idx) => (
-                  <div 
-                    key={`${company.id}-${idx}`} 
-                    className="modern-review-card"
-                    style={{
-                      flexShrink: 0,
-                      width: isMobile ? '300px' : '400px',
-                      marginRight: isMobile ? '16px' : '32px'
-                    }}
-                  >
-                    <div className="modern-card-header">
-                      <Quote className="modern-quote-icon" size={24} />
-                      <div className="modern-rating-section">
-                        <div className="modern-stars">
-                          {renderStars(company.rating)}
-                        </div>
-                        <span className="modern-rating-number">{company.rating}</span>
-                      </div>
-                    </div>
-
-                    <div className="modern-card-content">
-                      <p className="modern-review-text">{company.reviewText}</p>
-                    </div>
-
-                    <div className="modern-card-footer">
-                      <div
-                        className="modern-company-avatar"
-                        style={{ backgroundColor: company.color }}
-                      >
-                        {company.logo}
-                      </div>
-                      <div className="modern-company-info">
-                        <h4 className="modern-company-name">{company.name}</h4>
-                        <div className="modern-reviewer-info">
-                          <span className="modern-reviewer-name">{company.reviewer}</span>
-                          <span className="modern-reviewer-title">
-                            {company.position}, {company.company}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                <div className="staffing-testimonial-quote-wrapper">
+                  <Quote className="staffing-testimonial-quote-icon" />
+                </div>
+                <p className="staffing-testimonial-text">{review.text}</p>
+                <div className="staffing-testimonial-author">
+                  <div className="staffing-testimonial-avatar">
+                    <img
+                      src={review.image}
+                      alt={review.name}
+                      className="staffing-testimonial-avatar-img"
+                    />
                   </div>
-                ))}
+                  <h4 className="staffing-testimonial-author-name">{review.name}</h4>
+                  <span className="staffing-testimonial-company-name">
+                    {review.company}
+                  </span>
+                </div>
               </div>
-            </div>
-
-            {!isMobile && (
-              <button
-                className="modern-nav-btn modern-nav-next"
-                onClick={() => moveSlide(-1)}
-                aria-label="Next reviews"
-              >
-                <ChevronRight size={20} />
-              </button>
-            )}
+            ))}
           </div>
+
+          {/* arrows */}
+          {/* <button
+            className="staffing-testimonial-nav staffing-testimonial-nav-prev"
+            onClick={() => scrollByCard("left")}
+            aria-label="Previous review"
+          >
+            <ChevronLeft />
+          </button>
+          <button
+            className="staffing-testimonial-nav staffing-testimonial-nav-next"
+            onClick={() => scrollByCard("right")}
+            aria-label="Next review"
+          >
+            <ChevronRight />
+          </button> */}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

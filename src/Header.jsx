@@ -11,11 +11,13 @@ import {
   CheckCircle,
   Briefcase
 } from 'lucide-react';
+import { useNavigate } from "react-router-dom"; // ✅ Import router hook
 import './Header.css';
 
-const App = () => {
+const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeAnimation, setActiveAnimation] = useState(0);
+  const navigate = useNavigate(); // ✅ Hook
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -37,7 +39,7 @@ const App = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Smooth scroll helper
+  // Smooth scroll helper (homepage sections only)
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
@@ -55,19 +57,20 @@ const App = () => {
             <span className="logo-text">AimHrim</span>
           </div>
           <div className={`nav-menu${menuOpen ? ' open' : ''}`}>
-            <button className="nav-link" onClick={() => scrollToSection("services")}>
-              Services
+            <button className="nav-link" onClick={() => scrollToSection("services")}>Services</button>
+            <button className="nav-link" onClick={() => scrollToSection("about")}>About</button>
+            <button className="nav-link" onClick={() => scrollToSection("tech")}>Tech Stack</button>
+            <button className="nav-link" onClick={() => scrollToSection("contact")}>Contact</button>
+
+            {/* ✅ Career navigates to separate page */}
+            <button className="nav-link" onClick={() => { navigate("/career"); setMenuOpen(false); }}>
+              Career
             </button>
-            <button className="nav-link" onClick={() => scrollToSection("about")}>
-              About
+
+            {/* ✅ CV Drop also goes to Career page */}
+            <button className="cta-button" onClick={() => { navigate("/career"); setMenuOpen(false); }}>
+              QUICK CV DROP
             </button>
-            <button className="nav-link" onClick={() => scrollToSection("tech")}>
-              Tech Stack
-            </button>
-            <button className="nav-link" onClick={() => scrollToSection("contact")}>
-              Contact
-            </button>
-            <button className="cta-button" onClick={() => setMenuOpen(false)}>QUICK CV DROP</button>
           </div>
           <button
             className={`mobile-menu-toggle${menuOpen ? ' open' : ''}`}
@@ -79,38 +82,28 @@ const App = () => {
             <span className="bar bar3"></span>
           </button>
         </div>
-        {menuOpen && (
-          <div className="menu-overlay" onClick={() => setMenuOpen(false)} />
-        )}
+        {menuOpen && <div className="menu-overlay" onClick={() => setMenuOpen(false)} />}
       </nav>
 
-      {/* Hero Section */}
+      {/* Hero Section (only for homepage) */}
       <main className="hero-section modern-gradient-bg">
         <div className="hero-container">
           <div className="hero-content fade-in-up">
             <div className="hero-badge">
               <span className="badge-text">HIRE EXPERTS OR BE HIRED</span>
             </div>
-            <h1 className="hero-title">
-              Recruitment the way it should be.
-            </h1>
+            <h1 className="hero-title">Recruitment the way it should be.</h1>
             <p className="hero-description">
-              AimHrim connects top IT talent with leading companies, powering digital transformation.<br />
-              We deliver flexible staffing solutions for contract, project, and permanent roles.<br />
+              AimHrim connects top IT talent with leading companies, powering digital transformation.
+              We deliver flexible staffing solutions for contract, project, and permanent roles.
               Build your dream tech team with our expert recruiters and proven process.
             </p>
             <div className="hero-actions">
               <button className="get-connected-btn shine-anim">GET CONNECTED</button>
               <div className="social-icons">
-                <a href="#" className="social-icon social-facebook">
-                  <Facebook size={20} />
-                </a>
-                <a href="#" className="social-icon social-twitter">
-                  <Twitter size={20} />
-                </a>
-                <a href="#" className="social-icon social-linkedin">
-                  <Linkedin size={20} />
-                </a>
+                <a href="#" className="social-icon social-facebook"><Facebook size={20} /></a>
+                <a href="#" className="social-icon social-twitter"><Twitter size={20} /></a>
+                <a href="#" className="social-icon social-linkedin"><Linkedin size={20} /></a>
               </div>
             </div>
           </div>
@@ -161,14 +154,8 @@ const App = () => {
               </div>
 
               <div className="success-indicators">
-                <div className="success-icon success-1">
-                  <CheckCircle size={20} />
-                  <span>Match Found</span>
-                </div>
-                <div className="success-icon success-2">
-                  <ArrowRight size={16} />
-                  <span>Hired</span>
-                </div>
+                <div className="success-icon success-1"><CheckCircle size={20} /><span>Match Found</span></div>
+                <div className="success-icon success-2"><ArrowRight size={16} /><span>Hired</span></div>
               </div>
 
               <div className="code-particles">
@@ -198,4 +185,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Header;

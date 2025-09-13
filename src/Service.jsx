@@ -256,28 +256,7 @@ const Service = () => {
           ))}
         </div>
 
-        {/* Enhanced CTA */}
-        {/* <div className="services-cta">
-          <div className="cta-content">
-            <div className="cta-badge">
-              <Star className="badge-icon" />
-              <span>Ready to Scale?</span>
-            </div>
-            <h3>Let's Build Your Dream Team</h3>
-            <p>Join 500+ companies that trust us with their most critical hiring needs</p>
-            
-            <div className="cta-buttons">
-              <button className="btn-primary">
-                <span>Start Hiring Now</span>
-                <ArrowRight className="btn-arrow" />
-              </button>
-              <button className="btn-secondary">
-                <span>Schedule Demo</span>
-              </button>
-            </div>
-          </div>
-          <div className="cta-glow"></div>
-        </div> */}
+     
       </div>
     </section>
   );
