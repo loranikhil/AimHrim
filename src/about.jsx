@@ -7,7 +7,7 @@ import {
   Handshake, 
   Users 
 } from 'lucide-react';
-import './About.css';
+import './about.css';
 
 const About = () => {
   const topSteps = [
